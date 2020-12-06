@@ -2,12 +2,70 @@
 <html>
     <head>
         <title>RPG Battle</title>
-        <link type="text/css" rel="stylesheet" href="style.css"/>
+        <link rel="stylesheet" href="style.css"/>
     </head>
     <body>
-        
-        <script type="text/javascript" src="script.js"></script>
+        <section>
+            <div class="playerBox" id="player1">
+                <div>
+                    <p>Per1</p>
+                    <p>H104</p id="player1Health">
+                    <p>M 63</p id="player1Mana">
+                </div>
+            </div>
+            <div class="playerBox" id="player2">
+                <div>
+                    <p>Per1</p>
+                    <p>H104</p id="player2Health">
+                    <p>M 63</p id="player2Mana">
+                </div>
+            </div>
+            <div class="playerBox" id="player3">
+                <div>
+                    <p>Per1</p>
+                    <p>H104</p id="player3Health">
+                    <p>M 63</p id="player3Mana">
+                </div>
+            </div>
+            <div class="playerBox" id="player4">
+                <div>
+                    <p>Per1</p>
+                    <p>H104</p id="player4Health">
+                    <p>M 63</p id="player4Mana">
+                </div>
+            </div>
+        </section>
+
+        <div id="monsters">
+            <img src="img\\skeleton_idle.png" class="monster" id="skeleton">
+            <img src="img\\minotaur_idle.png" class="monster" id="minotaur">
+            <img src="img\\golem_idle.png" class="monster" id="golem">
+        </div>
+
+        <section id="bottom">
+            <div class="box" id="actions">
+                <div id="actionsInner">
+                    <p class="button" id="attack">Attaque</p>
+                    <p class="button" id="defense">Défense</p>
+                    <p class="button" id="special">Spécial</p>
+                </div>
+            </div>
+            <div id="kudo_box">
+                <div class="box" id="kudo_box1">
+                    <p>Description</p>
+                </div>
+                <div class="box" id="kudo_box1">
+                    <p>Affichage principal</p>
+                </div>
+            </div>
+            <div class="box" id="tooltip">
+                <div>
+                    <p id="tooltipTitle">Visez un monstre</p>
+                    <p id="tooltipText">Santé:</p>
+                </div>
+            </div>
+        </section>
+
+        <script src="script.js"></script>
     </body>
 </html>
-
-<!-- Un Sryler il a dit -->

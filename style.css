@@ -1,5 +1,102 @@
-body {
+body{
     background-image: url("img\\background.png");
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+section{
+    display: flex;
+    align-items: flex-start;
+    padding: 6px
+}
+
+.box{
+    color: white;
+    background-color: #030f1bd0;
+    border-radius: 0.5em;
+    border: 2px solid white;
+    margin: 2px;
+}
+
+.button{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.button:hover{
+    background: linear-gradient(0.25turn, #030f1b00, #0b73c9ea, #030f1b00);
+    cursor: pointer;
+}
+
+.playerBox{
+    color: white;
+    background-color: #030f1bd0;
+    border-radius: 0.5em;
+    border: 2px solid white;
+    margin: 2px;
+    display: flex;
+    justify-content: center;
+    width: 25%;
+}
+
+#actions{
+    display: flex;
+    justify-content: center;
+    width: 25%;
+}
+
+#actionsInner{
+    width: 90%;
+}
+
+#bottom{
+    justify-content: center;
+}
+
+#kudo_box{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#kudo_box1{
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#monsters{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-evenly;
+}
+
+#tooltip{
+    display: flex;
+    justify-content: center;
+    width: 25%;
+    padding: 17px 0 17px 0;
+}
+
+#skeleton{
+    height: 230px;
+}
+
+#minotaur{
+    height: 260px;
+}
+
+#golem{
+    height: 230px;
 }
