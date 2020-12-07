@@ -32,8 +32,12 @@ section{
 }
 
 .button:hover{
-    background: linear-gradient(0.25turn, #030f1b00, #0b73c9ea, #030f1b00);
+    color: #fa0;
     cursor: pointer;
+}
+
+.innerBox{
+    width: 90%;
 }
 
 .playerBox{
@@ -47,33 +51,35 @@ section{
     width: 25%;
 }
 
+.playerName, #attack, #defense, #player1Health, #player1Mana, #player2Health, #player2Mana, #player3Health, #player3Mana, #player4Health, #player4Mana, #special, #tooltipTitle, #tooltipText{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 #actions{
     display: flex;
     justify-content: center;
     width: 25%;
 }
 
-#actionsInner{
-    width: 90%;
+#actionDesc, #mainDisplay{
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #bottom{
     justify-content: center;
 }
 
-#kudo_box{
+#mainDisplayBox{
     width: 50%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-
-#kudo_box1{
-    height: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 #monsters{
@@ -82,15 +88,15 @@ section{
     justify-content: space-evenly;
 }
 
+#skeleton{
+    height: 230px;
+}
+
 #tooltip{
     display: flex;
     justify-content: center;
     width: 25%;
     padding: 17px 0 17px 0;
-}
-
-#skeleton{
-    height: 230px;
 }
 
 #minotaur{
