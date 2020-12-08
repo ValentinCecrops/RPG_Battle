@@ -32,8 +32,19 @@ var buttonSpecial = document.getElementById("special");
 var tooltipTitle = document.getElementById("tooltipTitle");
 var tooltipText = document.getElementById("tooltipText");
 
-var gameOver = false
+var player1Choice = "";
+var player2Choice = "";
+var player3Choice = "";
+var player4Choice = "";
 
+var gameOver = false;
+var playerChose = false;
+
+var mainDisplay = document.getElementById("mainDisplay")
+var player = 1
+
+
+// Evènements -------------------------------------------------------
 
 monster1.onmouseover = function()
 {
@@ -42,28 +53,16 @@ monster1.onmouseover = function()
     tooltipTitle.innerHTML = "Squelette";
     tooltipText.innerHTML = "Santé : " + monster1Health + " / 300";
 
-    monster1.onclick = function()
-    {
-        monster1.src = "img\\skeleton_selected.png";
-        monster1Clicked = true;
-    }
-
     monster1.onmouseout = function()
     {
-        if (monster1Clicked)
-        {
-            monster1.src = "img\\skeleton_selected.png";
-        }
-        else
-        {
-            monster1.src = "img\\skeleton.png";
-            tooltipTitle.innerHTML = "Visez un monstre pour";
-            tooltipText.innerHTML = "plus d'informations...";
-        }
+        monster1.src = "img\\skeleton.png";
+        tooltipTitle.innerHTML = "Visez un monstre pour";
+        tooltipText.innerHTML = "plus d'informations...";
     }
 }
 
-monster2.onmouseover = function()
+
+/*monster2.onmouseover = function()
 {
     monster2.src = "img\\minotaur_hover.png";
     monster2.style.cursor = "pointer";
@@ -117,29 +116,50 @@ monster3.onmouseover = function()
             tooltipText.innerHTML = "plus d'informations...";
         }
     }
+}*/
+
+
+// Fonctions --------------------------------------------------------
+
+function mainDisplayChoice(playerNum)
+{
+    mainDisplay.innerHTML = "Joueur " + playerNum + ", que voulez vous faire ?"
+    player1Box.style.borderColor = "#fa0"
 }
 
-
-
-
-var mainDisplay = document.getElementById("mainDisplay")
-var player = 1
-
-function mainDisplayChoice()
+function attackButtonEventListener()
 {
-    mainDisplay.innerHTML = "Joueur " + player + ", que voulez vous faire ?"
-    player1Box.style.borderColor = "#fa0"
+    console.log("atk");
+    removeButtonEventListeners();
+}
+
+function defenseButtonEventListener()
+{
+    console.log("def");
+    removeButtonEventListeners();
+}
+
+function specialButtonEventListener()
+{
+    console.log("spe");
+    removeButtonEventListeners();
+}
+
+function removeButtonEventListeners()
+{
+    buttonAttack.removeEventListener("click", attackButtonEventListener);
+    buttonDefense.removeEventListener("click", defenseButtonEventListener);
+    buttonSpecial.removeEventListener("click", specialButtonEventListener);
 }
 
 
 while (!gameOver)
 {
-    mainDisplayChoice(player)
+    mainDisplayChoice(player);
 
-    buttonAttack.onclick = function()
-    {
-        alert()
-    }
+    buttonAttack.addEventListener("click", attackButtonEventListener);
+    buttonDefense.addEventListener("click", defenseButtonEventListener);
+    buttonSpecial.addEventListener("click", specialButtonEventListener);
 
-    gameOver = true
+    gameOver = true;
 }
