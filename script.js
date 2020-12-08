@@ -38,7 +38,7 @@ var player3Choice = "";
 var player4Choice = "";
 
 var gameOver = false;
-var playerChose = false;
+var playerChoice
 
 var mainDisplay = document.getElementById("mainDisplay")
 var player = 1
@@ -62,31 +62,18 @@ monster1.onmouseover = function()
 }
 
 
-/*monster2.onmouseover = function()
+monster2.onmouseover = function()
 {
     monster2.src = "img\\minotaur_hover.png";
     monster2.style.cursor = "pointer";
     tooltipTitle.innerHTML = "Minotaure";
     tooltipText.innerHTML = "Santé : " + monster2Health + " / 300";
 
-    monster2.onclick = function()
-    {
-        monster2.src = "img\\minotaur_selected.png";
-        monster2Clicked = true;
-    }
-
     monster2.onmouseout = function()
     {
-        if (monster2Clicked)
-        {
-            monster2.src = "img\\minotaur_selected.png";
-        }
-        else
-        {
-            monster2.src = "img\\minotaur.png";
-            tooltipTitle.innerHTML = "Visez un monstre pour";
-            tooltipText.innerHTML = "plus d'informations...";
-        }
+        monster2.src = "img\\minotaur.png";
+        tooltipTitle.innerHTML = "Visez un monstre pour";
+        tooltipText.innerHTML = "plus d'informations...";
     }
 }
 
@@ -97,26 +84,13 @@ monster3.onmouseover = function()
     tooltipTitle.innerHTML = "Golem";
     tooltipText.innerHTML = "Santé : " + monster3Health + " / 300";
 
-    monster3.onclick = function()
-    {
-        monster3.src = "img\\golem_selected.png";
-        monster3Clicked = true;
-    }
-
     monster3.onmouseout = function()
     {
-        if (monster3Clicked)
-        {
-            monster3.src = "img\\golem_selected.png";
-        }
-        else
-        {
-            monster3.src = "img\\golem.png";
-            tooltipTitle.innerHTML = "Visez un monstre pour";
-            tooltipText.innerHTML = "plus d'informations...";
-        }
+        monster3.src = "img\\golem.png";
+        tooltipTitle.innerHTML = "Visez un monstre pour";
+        tooltipText.innerHTML = "plus d'informations...";
     }
-}*/
+}
 
 
 // Fonctions --------------------------------------------------------
@@ -129,20 +103,21 @@ function mainDisplayChoice(playerNum)
 
 function attackButtonEventListener()
 {
-    console.log("atk");
+    monsterChoiceEL();
     removeButtonEventListeners();
+    console.log("atk");
 }
 
 function defenseButtonEventListener()
 {
-    console.log("def");
     removeButtonEventListeners();
+    console.log("def");
 }
 
 function specialButtonEventListener()
 {
-    console.log("spe");
     removeButtonEventListeners();
+    console.log("spe");
 }
 
 function removeButtonEventListeners()
@@ -152,14 +127,104 @@ function removeButtonEventListeners()
     buttonSpecial.removeEventListener("click", specialButtonEventListener);
 }
 
-
-while (!gameOver)
+function monsterChoiceEL()
 {
-    mainDisplayChoice(player);
-
-    buttonAttack.addEventListener("click", attackButtonEventListener);
-    buttonDefense.addEventListener("click", defenseButtonEventListener);
-    buttonSpecial.addEventListener("click", specialButtonEventListener);
-
-    gameOver = true;
+    monster1.addEventListener("click", monsterChoice1);
+    monster2.addEventListener("click", monsterChoice2);
+    monster3.addEventListener("click", monsterChoice3);
 }
+
+function removeMonsterChoiceEL()
+{
+    monster1.removeEventListener("click", monsterChoice1);
+    monster2.removeEventListener("click", monsterChoice2);
+    monster3.removeEventListener("click", monsterChoice3);
+}
+
+function monsterChoice1()
+{
+    if (player === 1)
+    {
+        player1Choice = "monster1";
+    }
+    else if (player === 2)
+    {
+        player2Choice = "monster1";
+    }
+    else if (player === 3)
+    {
+        player3Choice = "monster1";
+    }
+    else if (player === 4)
+    {
+        player4Choice = "monster1";
+    }
+    removeMonsterChoiceEL();
+    console.log("m1");
+}
+
+function monsterChoice2()
+{
+    if (player === 1)
+    {
+        player1Choice = "monster2";
+    }
+    else if (player === 2)
+    {
+        player2Choice = "monster2";
+    }
+    else if (player === 3)
+    {
+        player3Choice = "monster2";
+    }
+    else if (player === 4)
+    {
+        player4Choice = "monster2";
+    }
+    removeMonsterChoiceEL();
+    console.log("m2");
+}
+
+function monsterChoice3()
+{
+    if (player === 1)
+    {
+        player1Choice = "monster3";
+    }
+    else if (player === 2)
+    {
+        player2Choice = "monster3";
+    }
+    else if (player === 3)
+    {
+        player3Choice = "monster3";
+    }
+    else if (player === 4)
+    {
+        player4Choice = "monster3";
+    }
+    removeMonsterChoiceEL();
+    console.log("m3");
+}
+
+function playerAttack() {
+    
+}
+
+function switchPlayer()
+{
+    player++
+    if (player > 4)
+    {
+        player = 1
+    }
+}
+
+
+
+mainDisplayChoice(player);
+
+
+buttonAttack.addEventListener("click", attackButtonEventListener);
+buttonDefense.addEventListener("click", defenseButtonEventListener);
+buttonSpecial.addEventListener("click", specialButtonEventListener);
