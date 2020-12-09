@@ -41,7 +41,12 @@ var gameOver = false;
 var playerChoice
 
 var mainDisplay = document.getElementById("mainDisplay")
-var player = 1
+var player = 0
+
+var player1Defense = 0.3
+var player2Defense = 0.1
+var player3Defense = 0.15
+var player4Defense = 0.2
 
 
 // Evènements -------------------------------------------------------
@@ -95,16 +100,20 @@ monster3.onmouseover = function()
 
 // Fonctions --------------------------------------------------------
 
-function mainDisplayChoice(playerNum)
+// Boutons
+
+function addButtonEventListeners()
 {
-    mainDisplay.innerHTML = "Joueur " + playerNum + ", que voulez vous faire ?"
-    player1Box.style.borderColor = "#fa0"
+    buttonAttack.addEventListener("click", attackButtonEventListener);
+    buttonDefense.addEventListener("click", defenseButtonEventListener);
+    buttonSpecial.addEventListener("click", specialButtonEventListener);
 }
 
 function attackButtonEventListener()
 {
-    monsterChoiceEL();
+    addMonsterChoiceEventListeners();
     removeButtonEventListeners();
+    mainDisplay.innerHTML = "Choisissez un monstre à attaquer"
     console.log("atk");
 }
 
@@ -127,104 +136,173 @@ function removeButtonEventListeners()
     buttonSpecial.removeEventListener("click", specialButtonEventListener);
 }
 
-function monsterChoiceEL()
+// Choix de monstre
+
+function addMonsterChoiceEventListeners()
 {
     monster1.addEventListener("click", monsterChoice1);
     monster2.addEventListener("click", monsterChoice2);
     monster3.addEventListener("click", monsterChoice3);
 }
 
-function removeMonsterChoiceEL()
+function monsterChoiceMain(monster)
+{
+    switch (player)
+    {
+        case 1:
+            player1Choice = monster;
+            break;
+
+        case 2:
+            player2Choice = monster;
+            break;
+
+        case 3:
+            player3Choice = monster;
+            break;
+
+        case 4:
+            player4Choice = monster;
+            break;
+    }
+
+    removeMonsterChoiceEventListeners();
+    console.log(player + monster);
+    switchPlayer();
+    addButtonEventListeners();
+}
+
+function monsterChoice1()
+{
+    monsterChoiceMain("monster1");
+}
+
+function monsterChoice2()
+{
+    monsterChoiceMain("monster2");
+}
+
+function monsterChoice3()
+{
+    monsterChoiceMain("monster3");
+}
+
+function removeMonsterChoiceEventListeners()
 {
     monster1.removeEventListener("click", monsterChoice1);
     monster2.removeEventListener("click", monsterChoice2);
     monster3.removeEventListener("click", monsterChoice3);
 }
 
-function monsterChoice1()
+// Actions du joueur
+
+function playerAttack(_monsterHealth)
 {
-    if (player === 1)
-    {
-        player1Choice = "monster1";
-    }
-    else if (player === 2)
-    {
-        player2Choice = "monster1";
-    }
-    else if (player === 3)
-    {
-        player3Choice = "monster1";
-    }
-    else if (player === 4)
-    {
-        player4Choice = "monster1";
-    }
-    removeMonsterChoiceEL();
-    console.log("m1");
+    monsterHealth -= 60;
+    mainDisplay.innerHtml // A faire --------------------------------
 }
 
-function monsterChoice2()
+async function switchPlayer()
 {
-    if (player === 1)
-    {
-        player1Choice = "monster2";
-    }
-    else if (player === 2)
-    {
-        player2Choice = "monster2";
-    }
-    else if (player === 3)
-    {
-        player3Choice = "monster2";
-    }
-    else if (player === 4)
-    {
-        player4Choice = "monster2";
-    }
-    removeMonsterChoiceEL();
-    console.log("m2");
-}
+    player++;
 
-function monsterChoice3()
-{
-    if (player === 1)
-    {
-        player1Choice = "monster3";
-    }
-    else if (player === 2)
-    {
-        player2Choice = "monster3";
-    }
-    else if (player === 3)
-    {
-        player3Choice = "monster3";
-    }
-    else if (player === 4)
-    {
-        player4Choice = "monster3";
-    }
-    removeMonsterChoiceEL();
-    console.log("m3");
-}
-
-function playerAttack() {
-    
-}
-
-function switchPlayer()
-{
-    player++
     if (player > 4)
     {
-        player = 1
+        player = 0;
+    }
+
+    switch (player)
+    {
+        case 1:
+            player1Box.style.borderColor = "#fa0";
+            mainDisplay.innerHTML = "Choisissez l'action du guerrier";
+            buttonSpecial.innerHTML = "Spé1";
+            break;
+
+        case 2:
+            player1Box.style.borderColor = "white";
+            player2Box.style.borderColor = "#fa0";
+            mainDisplay.innerHTML = "Choisissez l'action du mage";
+            buttonSpecial.innerHTML = "Magie";
+            break;
+
+        case 3:
+            player2Box.style.borderColor = "white";
+            player3Box.style.borderColor = "#fa0";
+            mainDisplay.innerHTML = "Choisissez l'action de l'archer";
+            buttonSpecial.innerHTML = "Spé3";
+            break;
+
+        case 4:
+            player3Box.style.borderColor = "white";
+            player4Box.style.borderColor = "#fa0";
+            mainDisplay.innerHTML = "Choisissez l'action du guérisseur";
+            buttonSpecial.innerHTML = "Soin";
+            break;
+
+        case 0:
+            player4Box.style.borderColor = "white";
+
+            monsterAttack("squelette");
+            await new Promise(r => setTimeout(r, 3000));
+
+            monsterAttack("minotaure");
+            await new Promise(r => setTimeout(r, 3000));
+
+            monsterAttack("golem");
+            await new Promise(r => setTimeout(r, 3000));
+
+            switchPlayer();
+    }
+}
+
+// Action des monstres
+
+function monsterAttack(monsterName)
+{
+    let randomPlayer = Math.floor(Math.random() * 4 + 1);
+    let monsterAttack
+
+    switch (randomPlayer) {
+        case 1:
+            monsterAttack = Math.floor(30 * (1 - player1Defense));
+            player1Health -= monsterAttack
+            document.getElementById("player1Health").innerHTML = "Santé : " + player1Health + " / 300";
+            mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages au guerrier";
+            break;
+
+        case 2:
+            monsterAttack = Math.floor(30 * (1 - player2Defense));
+            player2Health -= monsterAttack;
+            document.getElementById("player2Health").innerHTML = "Santé : " + player2Health + " / 300";
+            mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages au mage";
+            break;
+
+        case 3:
+            monsterAttack = Math.floor(30 * (1 - player3Defense));
+            player3Health -= monsterAttack;
+            document.getElementById("player3Health").innerHTML = "Santé : " + player3Health + " / 300";
+            mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages à l'archer";
+            break;
+
+        case 4:
+            monsterAttack = Math.floor(30 * (1 - player4Defense));
+            player4Health -= monsterAttack;
+            document.getElementById("player4Health").innerHTML = "Santé : " + player4Health + " / 300";
+            mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages au guérisseur";
+            break;
+
+        default:
+            console.log("pb");
     }
 }
 
 
+// Programme principal ----------------------------------------------
 
-mainDisplayChoice(player);
+switchPlayer();
+addButtonEventListeners();
 
 
-buttonAttack.addEventListener("click", attackButtonEventListener);
-buttonDefense.addEventListener("click", defenseButtonEventListener);
-buttonSpecial.addEventListener("click", specialButtonEventListener);
+// Pour la gestion du temps (seulement dans une fonction async !!!) :
+// await new Promise(r => setTimeout(r, timeInMs));
