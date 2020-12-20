@@ -13,7 +13,7 @@ var player2Mana = 100;
 var player3Mana = 100;
 var player4Mana = 100;
 
-var monster1 = document.getElementById("skeleton");
+var monster1 = document.getElementById("wraith");
 var monster2 = document.getElementById("minotaur");
 var monster3 = document.getElementById("golem");
 
@@ -37,7 +37,6 @@ var player2Choice = "";
 var player3Choice = "";
 var player4Choice = "";
 
-var gameOver = false;
 var playerChoice
 
 var mainDisplay = document.getElementById("mainDisplay")
@@ -53,14 +52,14 @@ var player4Defense = 0.2
 
 monster1.onmouseover = function()
 {
-    monster1.src = "img\\skeleton_hover.png";
+    monster1.src = "img\\wraith_hover.png";
     monster1.style.cursor = "pointer";
-    tooltipTitle.innerHTML = "Squelette";
+    tooltipTitle.innerHTML = "Spectre";
     tooltipText.innerHTML = "Santé : " + monster1Health + " / 300";
 
     monster1.onmouseout = function()
     {
-        monster1.src = "img\\skeleton.png";
+        monster1.src = "img\\wraith.png";
         tooltipTitle.innerHTML = "Visez un monstre pour";
         tooltipText.innerHTML = "plus d'informations...";
     }
@@ -243,7 +242,7 @@ async function switchPlayer()
         case 0:
             player4Box.style.borderColor = "white";
 
-            monsterAttack("squelette");
+            monsterAttack("spectre");
             await new Promise(r => setTimeout(r, 3000));
 
             monsterAttack("minotaure");
