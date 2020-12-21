@@ -37,15 +37,19 @@ var player2Choice = "";
 var player3Choice = "";
 var player4Choice = "";
 
-var playerChoice
+var playerChoice;
 
-var mainDisplay = document.getElementById("mainDisplay")
-var player = 0
+var mainDisplay = document.getElementById("mainDisplay");
+var player = 0;
 
-var player1Defense = 0.3
-var player2Defense = 0.1
-var player3Defense = 0.15
-var player4Defense = 0.2
+var player1Defense = 0.3;
+var player2Defense = 0.1;
+var player3Defense = 0.15;
+var player4Defense = 0.2;
+
+var poisonCounter = 0;
+
+var tooltipBox = document.getElementById("tooltip");
 
 
 // Evènements -------------------------------------------------------
@@ -53,15 +57,14 @@ var player4Defense = 0.2
 monster1.onmouseover = function()
 {
     monster1.src = "img\\wraith_hover.png";
-    monster1.style.cursor = "pointer";
     tooltipTitle.innerHTML = "Spectre";
     tooltipText.innerHTML = "Santé : " + monster1Health + " / 300";
+    tooltipBox.style.visibility = "visible";
 
     monster1.onmouseout = function()
     {
         monster1.src = "img\\wraith.png";
-        tooltipTitle.innerHTML = "Visez un monstre pour";
-        tooltipText.innerHTML = "plus d'informations...";
+        tooltipBox.style.visibility = "hidden";
     }
 }
 
@@ -69,30 +72,28 @@ monster1.onmouseover = function()
 monster2.onmouseover = function()
 {
     monster2.src = "img\\minotaur_hover.png";
-    monster2.style.cursor = "pointer";
     tooltipTitle.innerHTML = "Minotaure";
     tooltipText.innerHTML = "Santé : " + monster2Health + " / 300";
+    tooltipBox.style.visibility = "visible";
 
     monster2.onmouseout = function()
     {
         monster2.src = "img\\minotaur.png";
-        tooltipTitle.innerHTML = "Visez un monstre pour";
-        tooltipText.innerHTML = "plus d'informations...";
+        tooltipBox.style.visibility = "hidden";
     }
 }
 
 monster3.onmouseover = function()
 {
     monster3.src = "img\\golem_hover.png";
-    monster3.style.cursor = "pointer";
     tooltipTitle.innerHTML = "Golem";
     tooltipText.innerHTML = "Santé : " + monster3Health + " / 300";
+    tooltipBox.style.visibility = "visible";
 
     monster3.onmouseout = function()
     {
         monster3.src = "img\\golem.png";
-        tooltipTitle.innerHTML = "Visez un monstre pour";
-        tooltipText.innerHTML = "plus d'informations...";
+        tooltipBox.style.visibility = "hidden";
     }
 }
 
@@ -112,7 +113,7 @@ function attackButtonEventListener()
 {
     addMonsterChoiceEventListeners();
     removeButtonEventListeners();
-    mainDisplay.innerHTML = "Choisissez un monstre à attaquer"
+    mainDisplay.innerHTML = "Choisissez un monstre à attaquer";
     console.log("atk");
 }
 
@@ -144,24 +145,24 @@ function addMonsterChoiceEventListeners()
     monster3.addEventListener("click", monsterChoice3);
 }
 
-function monsterChoiceMain(monster)
+async function monsterChoiceMain(monster)
 {
     switch (player)
     {
         case 1:
-            player1Choice = monster;
+            playerAttack("Le guerrier", monster);
             break;
 
         case 2:
-            player2Choice = monster;
+            playerAttack("Le mage", monster);
             break;
 
         case 3:
-            player3Choice = monster;
+            playerAttack("L'archer", monster);
             break;
 
         case 4:
-            player4Choice = monster;
+            playerAttack("Le guérisseur", monster);
             break;
     }
 
@@ -173,17 +174,17 @@ function monsterChoiceMain(monster)
 
 function monsterChoice1()
 {
-    monsterChoiceMain("monster1");
+    monsterChoiceMain(1);
 }
 
 function monsterChoice2()
 {
-    monsterChoiceMain("monster2");
+    monsterChoiceMain(2);
 }
 
 function monsterChoice3()
 {
-    monsterChoiceMain("monster3");
+    monsterChoiceMain(3);
 }
 
 function removeMonsterChoiceEventListeners()
@@ -195,13 +196,28 @@ function removeMonsterChoiceEventListeners()
 
 // Actions du joueur
 
-function playerAttack(_monsterHealth)
+function playerAttack(playerName, monster)
 {
-    monsterHealth -= 60;
-    mainDisplay.innerHtml // A faire --------------------------------
+    switch (monster)
+    {
+        case 1:
+            monster1Health -= 60;
+            mainDisplay.innerHtml = playerName + " inflige 60 de dommages au spectre";
+            break;
+
+        case 2:
+            monster2Health -= 60;
+            mainDisplay.innerHtml = playerName + " inflige 60 de dommages au minotaure";
+            break;
+
+        case 3:
+            monster3Health -= 60;
+            mainDisplay.innerHtml = playerName + " inflige 60 de dommages au golem";
+            break;
+    }
 }
 
-async function switchPlayer()
+function switchPlayer()
 {
     player++;
 
@@ -215,7 +231,7 @@ async function switchPlayer()
         case 1:
             player1Box.style.borderColor = "#fa0";
             mainDisplay.innerHTML = "Choisissez l'action du guerrier";
-            buttonSpecial.innerHTML = "Spé1";
+            buttonSpecial.innerHTML = "Attaque puissante";
             break;
 
         case 2:
@@ -229,7 +245,7 @@ async function switchPlayer()
             player2Box.style.borderColor = "white";
             player3Box.style.borderColor = "#fa0";
             mainDisplay.innerHTML = "Choisissez l'action de l'archer";
-            buttonSpecial.innerHTML = "Spé3";
+            buttonSpecial.innerHTML = "Flèche empoisonnée";
             break;
 
         case 4:
@@ -241,26 +257,16 @@ async function switchPlayer()
 
         case 0:
             player4Box.style.borderColor = "white";
-
-            monsterAttack("spectre");
-            await new Promise(r => setTimeout(r, 3000));
-
-            monsterAttack("minotaure");
-            await new Promise(r => setTimeout(r, 3000));
-
-            monsterAttack("golem");
-            await new Promise(r => setTimeout(r, 3000));
-
-            switchPlayer();
+            monsterAttackSequence();
     }
 }
 
-// Action des monstres
+// Actions des monstres
 
 function monsterAttack(monsterName)
 {
     let randomPlayer = Math.floor(Math.random() * 4 + 1);
-    let monsterAttack
+    let monsterAttack;
 
     switch (randomPlayer) {
         case 1:
@@ -296,12 +302,22 @@ function monsterAttack(monsterName)
     }
 }
 
+async function monsterAttackSequence()
+{
+    monsterAttack("spectre");
+    await new Promise(r => setTimeout(r, 3000));
+
+    monsterAttack("minotaure");
+    await new Promise(r => setTimeout(r, 3000));
+
+    monsterAttack("golem");
+    await new Promise(r => setTimeout(r, 3000));
+
+    switchPlayer();
+}
+
 
 // Programme principal ----------------------------------------------
 
 switchPlayer();
 addButtonEventListeners();
-
-
-// Pour la gestion du temps (seulement dans une fonction async !!!) :
-// await new Promise(r => setTimeout(r, timeInMs));

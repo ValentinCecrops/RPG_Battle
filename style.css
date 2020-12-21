@@ -27,17 +27,21 @@ section{
 
 .button{
     width: 100%;
+    cursor: pointer;
     display: flex;
     justify-content: center;
 }
 
 .button:hover{
     color: #fa0;
-    cursor: pointer;
 }
 
 .innerBox{
     width: 90%;
+}
+
+.monster{
+    cursor: pointer;
 }
 
 .playerBox{
@@ -99,6 +103,7 @@ section{
     justify-content: center;
     width: 25%;
     padding: 17px 0 17px 0;
+    visibility: hidden;
 }
 
 #minotaur{
