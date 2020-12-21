@@ -94,16 +94,16 @@ section{
     justify-content: space-evenly;
 }
 
-#wraith{
-    height: 220px;
-}
-
 #tooltip{
     display: flex;
     justify-content: center;
     width: 25%;
     padding: 17px 0 17px 0;
     visibility: hidden;
+}
+
+#wraith{
+    height: 220px;
 }
 
 #minotaur{
