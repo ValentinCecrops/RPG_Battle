@@ -18,6 +18,11 @@ var player2Mana = 100;
 var player3Mana = 100;
 var player4Mana = 100;
 
+var player1ManaDisplay = document.getElementById("player1Mana");
+var player2ManaDisplay = document.getElementById("player2Mana");
+var player3ManaDisplay = document.getElementById("player3Mana");
+var player4ManaDisplay = document.getElementById("player4Mana");
+
 var monster1 = document.getElementById("wraith");
 var monster2 = document.getElementById("minotaur");
 var monster3 = document.getElementById("golem");
@@ -26,43 +31,44 @@ var monster1Health = 300;
 var monster2Health = 300;
 var monster3Health = 300;
 
-var monster1Clicked = false;
-var monster2Clicked = false;
-var monster3Clicked = false;
+var monster1IsDead = false;
+var monster2IsDead = false;
+var monster3IsDead = false;
 
 var buttonAttack = document.getElementById("attack");
 var buttonDefense = document.getElementById("defense");
 var buttonSpecial = document.getElementById("special");
 
+var tooltipBox = document.getElementById("tooltip");
 var tooltipTitle = document.getElementById("tooltipTitle");
 var tooltipText = document.getElementById("tooltipText");
 
-var player1Choice = "";
-var player2Choice = "";
-var player3Choice = "";
-var player4Choice = "";
-
-var playerChoice;
+var player1ChoiceIsSpecial = false;
+var player2ChoiceIsSpecial = false;
 
 var mainDisplay = document.getElementById("mainDisplay");
 var player = 0;
 
-var player1Defense = 0.3;
-var player2Defense = 0.1;
-var player3Defense = 0.15;
-var player4Defense = 0.2;
+var player1Defense = 30;
+var player2Defense = 10;
+var player3Defense = 15;
+var player4Defense = 20;
 
 var player1IsDefended = false;
 var player2IsDefended = false;
 var player3IsDefended = false;
 var player4IsDefended = false;
 
+var player1IsDead = false;
+var player2IsDead = false;
+var player3IsDead = false;
+var player4IsDead = false;
+
 var poisonCounter = 0;
+var poisonTarget;
 
-var tooltipBox = document.getElementById("tooltip");
 
-
-// Evènements -------------------------------------------------------
+// Evènements -----------------------------------------------------------------
 
 monster1.onmouseover = function()
 {
@@ -107,7 +113,7 @@ monster3.onmouseover = function()
 }
 
 
-// Fonctions --------------------------------------------------------
+// Fonctions ------------------------------------------------------------------
 
 // Boutons
 
@@ -135,6 +141,30 @@ function defenseButtonEventListener()
 function specialButtonEventListener()
 {
     removeButtonEventListeners();
+
+    switch (player)
+    {
+        case 1:
+            player1ChoiceIsSpecial = true;
+            addMonsterChoiceEventListeners();
+            mainDisplay.innerHTML = "Choisissez un monstre à fracasser";
+            break;
+
+        case 2:
+            player2ChoiceIsSpecial = true;
+            addMonsterChoiceEventListeners();
+            mainDisplay.innerHTML = "Choisissez un monstre à empoisonner";
+            break;
+
+        case 3:
+            player3Special();
+            break;
+
+        case 4:
+            player4Special();
+            break;
+    }
+
     console.log("spe");
 }
 
@@ -156,17 +186,50 @@ function addMonsterChoiceEventListeners()
 
 function monsterChoice1EventListener()
 {
-    playerAttack(1);
+    if (player1ChoiceIsSpecial)
+    {
+        player1Special(1)
+    }
+    else if (player2ChoiceIsSpecial)
+    {
+        player2Special(1)
+    }
+    else
+    {
+        playerAttack(1);
+    }
 }
 
 function monsterChoice2EventListener()
 {
-    playerAttack(2);
+    if (player1ChoiceIsSpecial)
+    {
+        player1Special(2)
+    }
+    else if (player2ChoiceIsSpecial)
+    {
+        player2Special(2)
+    }
+    else
+    {
+        playerAttack(2);
+    }
 }
 
 function monsterChoice3EventListener()
 {
-    playerAttack(3);
+    if (player1ChoiceIsSpecial)
+    {
+        player1Special(3)
+    }
+    else if (player2ChoiceIsSpecial)
+    {
+        player2Special(3)
+    }
+    else
+    {
+        playerAttack(3);
+    }
 }
 
 function removeMonsterChoiceEventListeners()
@@ -180,7 +243,6 @@ function removeMonsterChoiceEventListeners()
 
 function playerAttack(monster)
 {
-
     switch (monster)
     {
         case 1:
@@ -198,10 +260,10 @@ function playerAttack(monster)
             tooltipText.innerHTML = "Santé : " + monster3Health + " / 300";
             break;
     }
-    removeMonsterChoiceEventListeners();
 
-    console.log(player, monster);
+    removeMonsterChoiceEventListeners();
     switchPlayer();
+    console.log(player, monster);
 }
 
 function playerDefense()
@@ -228,53 +290,275 @@ function playerDefense()
     switchPlayer()
 }
 
-function switchPlayer()
+function player1Special(monster) // Attaque puissante
 {
-    player++;
-
-    if (player > 4)
-    {
-        player = 0;
-    }
-
-    switch (player)
+    switch (monster)
     {
         case 1:
-            player1Box.style.borderColor = "#fa0";
-            mainDisplay.innerHTML = "Choisissez l'action du guerrier";
-            buttonSpecial.innerHTML = "Attaque puissante";
-            addButtonEventListeners();
+            monster1Health -= 100;
+            tooltipText.innerHTML = "Santé : " + monster1Health + " / 300";
             break;
 
         case 2:
-            player1Box.style.borderColor = "white";
-            player2Box.style.borderColor = "#fa0";
-            mainDisplay.innerHTML = "Choisissez l'action du mage";
-            buttonSpecial.innerHTML = "Magie";
-            addButtonEventListeners();
+            monster2Health -= 100;
+            tooltipText.innerHTML = "Santé : " + monster2Health + " / 300";
             break;
 
         case 3:
-            player2Box.style.borderColor = "white";
-            player3Box.style.borderColor = "#fa0";
-            mainDisplay.innerHTML = "Choisissez l'action de l'archer";
-            buttonSpecial.innerHTML = "Flèche empoisonnée";
-            addButtonEventListeners();
+            monster3Health -= 100;
+            tooltipText.innerHTML = "Santé : " + monster3Health + " / 300";
             break;
-
-        case 4:
-            player3Box.style.borderColor = "white";
-            player4Box.style.borderColor = "#fa0";
-            mainDisplay.innerHTML = "Choisissez l'action du guérisseur";
-            buttonSpecial.innerHTML = "Soin";
-            addButtonEventListeners();
-            break;
-
-        case 0:
-            player4Box.style.borderColor = "white";
-
-            monsterAttackMain();
     }
+
+    player1Mana -= 50;
+    player1ManaDisplay.innerHTML = "Mana : " + player1Mana + " / 100";
+    player1ChoiceIsSpecial = false;
+
+    removeMonsterChoiceEventListeners();
+    switchPlayer();
+    console.log(player, monster);
+}
+
+function player2Special(monster) // Poison
+{
+    poisonCounter = 3;
+    poisonTarget = monster;
+
+    player2Mana -= 50;
+    player2ManaDisplay.innerHTML = "Mana : " + player2Mana + " / 100";
+    player2ChoiceIsSpecial = false;
+
+    removeMonsterChoiceEventListeners();
+    switchPlayer();
+    console.log(player, monster);
+}
+
+function player3Special() // Salve
+{
+    monster1Health -= 30;
+    monster2Health -= 30;
+    monster3Health -= 30;
+
+    player3Mana -= 50;
+    player3ManaDisplay.innerHTML = "Mana : " + player3Mana + " / 100";
+
+    switchPlayer();
+}
+
+function player4Special() // Soin
+{
+    function healPlayer(playerHealth)
+    {
+        playerHealth += 60;
+
+        if (playerHealth > 300)
+        {
+            playerHealth = 300;
+        }
+    }
+
+    if (player1Health <= player2Health && player1Health <= player3Health && player1Health <= player4Health)
+    {
+        healPlayer(player1Health);
+        player1HealthDisplay = "Santé : " + player1Health + " / 300";
+    }
+    else if (player2Health <= player1Health && player2Health <= player3Health && player2Health <= player4Health)
+    {
+        healPlayer(player2Health);
+        player2HealthDisplay = "Santé : " + player2Health + " / 300";
+    }
+    else if (player3Health <= player1Health && player3Health <= player2Health && player3Health <= player4Health)
+    {
+        healPlayer(player3Health);
+        player3HealthDisplay = "Santé : " + player3Health + " / 300";
+    }
+    else
+    {
+        healPlayer(player4Health);
+        player4HealthDisplay = "Santé : " + player4Health + " / 300";
+    }
+
+    player4Mana -= 50;
+    player4ManaDisplay.innerHTML = "Mana : " + player4Mana + " / 100";
+
+    switchPlayer();
+}
+
+function playerPoison()
+{
+    poisonCounter -= 1;
+
+    switch (poisonTarget)
+    {
+        case 1:
+            if (monster1IsDead) {return;}
+            monster1Health -= 30;
+            mainDisplay.innerHTML = "Le poison inflige 30 de dégâts au spectre ; "  + poisonCounter + " tour(s) restant(s)";
+            break;
+
+        case 2:
+            if (monster2IsDead) {return;}
+            monster2Health -= 30;
+            mainDisplay.innerHTML = "Le poison inflige 30 de dégâts au minotaure ; "  + poisonCounter + " tour(s) restant(s)";
+            break;
+
+        case 3:
+            if (monster3IsDead) {return;}
+            monster3Health -= 30;
+            mainDisplay.innerHTML = "Le poison inflige 30 de dégâts au golem ; "  + poisonCounter + " tour(s) restant(s)";
+            break;
+    }
+
+    if (poisonCounter <= 0)
+    {
+        poisonTarget = 0;
+    }
+}
+
+function switchPlayer()
+{
+    if (!checkPlayerWin())
+    {
+        player++;
+
+        if (player > 4)
+        {
+            player = 0;
+        }
+
+        switch (player)
+        {
+            case 1:
+                if (player1IsDead)
+                {
+                    switchPlayer();
+                    return;
+                }
+                player1Box.style.borderColor = "#fa0";
+                mainDisplay.innerHTML = "Choisissez l'action du guerrier";
+                buttonSpecial.innerHTML = "Attaque puissante";
+                addButtonEventListeners();
+                break;
+
+            case 2:
+                if (player2IsDead)
+                {
+                    switchPlayer();
+                    return;
+                }
+                if (!player1IsDead)
+                {
+                    player1Box.style.borderColor = "white";
+                }
+                player2Box.style.borderColor = "#fa0";
+                mainDisplay.innerHTML = "Choisissez l'action du mage";
+                buttonSpecial.innerHTML = "Poison";
+                addButtonEventListeners();
+                break;
+
+            case 3:
+                if (player3IsDead)
+                {
+                    switchPlayer();
+                    return;
+                }
+                if (!player2IsDead)
+                {
+                    player2Box.style.borderColor = "white";
+                }
+                player3Box.style.borderColor = "#fa0";
+                mainDisplay.innerHTML = "Choisissez l'action de l'archer";
+                buttonSpecial.innerHTML = "Salve";
+                addButtonEventListeners();
+                break;
+
+            case 4:
+                if (player4IsDead)
+                {
+                    switchPlayer();
+                    return;
+                }
+                if (!player3IsDead)
+                {
+                    player3Box.style.borderColor = "white";
+                }
+                player4Box.style.borderColor = "#fa0";
+                mainDisplay.innerHTML = "Choisissez l'action du guérisseur";
+                buttonSpecial.innerHTML = "Soin";
+                addButtonEventListeners();
+                break;
+
+            case 0:
+                if (!player4IsDead)
+                {
+                    player4Box.style.borderColor = "white";
+                }
+                monsterAttackMain();
+                break;
+        }
+    }
+}
+
+// Vérifications de victoire
+
+function checkMonsterDeath(monster, monsterHealth)
+{
+    if (monsterHealth <= 0)
+    {
+        monster.style.visibility = "hidden";
+        return true;
+    }
+
+    return false;
+}
+
+function checkPlayerWin()
+{
+    monster1IsDead = checkMonsterDeath(monster1, monster1Health);
+    monster2IsDead = checkMonsterDeath(monster2, monster2Health);
+    monster3IsDead = checkMonsterDeath(monster3, monster3Health);
+
+    if (monster1IsDead && monster2IsDead && monster3IsDead)
+    {
+        buttonAttack.disabled = true;
+        buttonDefense.disabled = true;
+        buttonSpecial.disabled = true;
+        mainDisplay.innerHTML = "Vous avez gagné ! Félicitations !";
+        return true;
+    }
+
+    return false;
+}
+
+function checkPlayerDeath(playerHealth, playerHealthDisplay, playerBox)
+{
+    if (playerHealth <= 0)
+    {
+        playerHealthDisplay.innerHtml = "Santé : 0 / 300";
+        playerBox.style.borderColor = "darkred";
+        return true;
+    }
+
+    return false;
+}
+
+function checkMonsterWin()
+{
+    player1IsDead = checkPlayerDeath(player1Health, player1HealthDisplay, player1Box);
+    player2IsDead = checkPlayerDeath(player2Health, player2HealthDisplay, player2Box);
+    player3IsDead = checkPlayerDeath(player3Health, player3HealthDisplay, player3Box);
+    player4IsDead = checkPlayerDeath(player4Health, player4HealthDisplay, player4Box);
+
+    if (player1IsDead && player2IsDead && player3IsDead && player4IsDead)
+    {
+        buttonAttack.disabled = true;
+        buttonDefense.disabled = true;
+        buttonSpecial.disabled = true;
+        mainDisplay.innerHTML = "Vous avez perdu. Pfff...";
+        return true;
+    }
+
+    return false;
 }
 
 // Actions des monstres
@@ -283,16 +567,37 @@ async function monsterAttackMain()
 {
     removeButtonEventListeners();
 
-    monsterAttackSequence("spectre");
-    await new Promise(r => setTimeout(r, 3000));
+    if (!monster1IsDead)
+    {
+        monsterAttackSequence("spectre");
+        await new Promise(r => setTimeout(r, 3000));
+    }
 
-    monsterAttackSequence("minotaure");
-    await new Promise(r => setTimeout(r, 3000));
+    checkMonsterWin();
 
-    monsterAttackSequence("golem");
-    await new Promise(r => setTimeout(r, 3000));
+    if (!monster2IsDead)
+    {
+        monsterAttackSequence("minotaure");
+        await new Promise(r => setTimeout(r, 3000));
+    }
 
-    player1IsDefended = player2IsDefended = player3IsDefended = player4IsDefended = false
+    checkMonsterWin();
+
+    if (!monster3IsDead)
+    {
+        monsterAttackSequence("golem");
+        await new Promise(r => setTimeout(r, 3000));
+    }
+
+    checkMonsterWin();
+
+    if (poisonCounter > 0)
+    {
+        playerPoison();
+        await new Promise(r => setTimeout(r, 3000));
+    }
+
+    player1IsDefended = player2IsDefended = player3IsDefended = player4IsDefended = false;
 
     switchPlayer();
     addButtonEventListeners();
@@ -306,9 +611,14 @@ function monsterAttackSequence(monsterName)
     switch (randomPlayer)
     {
         case 1:
+            if (player1IsDead)
+            {
+                monsterAttackSequence(monsterName);
+                return;
+            }
             if (!player1IsDefended)
             {
-                monsterAttack = Math.floor(30 * (1 - player1Defense));
+                monsterAttack = 600 - player1Defense;
                 player1Health -= monsterAttack;
                 player1HealthDisplay.innerHTML = "Santé : " + player1Health + " / 300";
                 mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages au guerrier";
@@ -320,9 +630,14 @@ function monsterAttackSequence(monsterName)
             break;
 
         case 2:
+            if (player2IsDead)
+            {
+                monsterAttackSequence(monsterName);
+                return;
+            }
             if (!player2IsDefended)
             {
-                monsterAttack = Math.floor(30 * (1 - player2Defense));
+                monsterAttack = 600 - player2Defense;
                 player2Health -= monsterAttack;
                 player2HealthDisplay.innerHTML = "Santé : " + player2Health + " / 300";
                 mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages au mage";
@@ -334,9 +649,14 @@ function monsterAttackSequence(monsterName)
             break;
 
         case 3:
+            if (player3IsDead)
+            {
+                monsterAttackSequence(monsterName);
+                return;
+            }
             if (!player3IsDefended)
             {
-                monsterAttack = Math.floor(30 * (1 - player3Defense));
+                monsterAttack = 600 - player3Defense;
                 player3Health -= monsterAttack;
                 player3HealthDisplay.innerHTML = "Santé : " + player3Health + " / 300";
                 mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages à l'archer";
@@ -348,9 +668,14 @@ function monsterAttackSequence(monsterName)
             break;
 
         case 4:
+            if (player4IsDead)
+            {
+                monsterAttackSequence(monsterName);
+                return;
+            }
             if (!player4IsDefended)
             {
-                monsterAttack = Math.floor(30 * (1 - player4Defense));
+                monsterAttack = 600 - player4Defense;
                 player4Health -= monsterAttack;
                 player4HealthDisplay.innerHTML = "Santé : " + player4Health + " / 300";
                 mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages au guérisseur";
@@ -364,7 +689,7 @@ function monsterAttackSequence(monsterName)
 }
 
 
-// Programme principal ----------------------------------------------
+// Programme principal --------------------------------------------------------
 
 switchPlayer();
 addButtonEventListeners();
