@@ -576,7 +576,7 @@ function player4Special() // Soin
         case 1:
             player1Health += 60;
 
-            if (player1Health > 300);
+            if (player1Health > 300)
             {
                 player1Health = 300;
             }
@@ -587,7 +587,7 @@ function player4Special() // Soin
         case 2:
             player2Health += 60;
 
-            if (player2Health > 300);
+            if (player2Health > 300)
             {
                 player2Health = 300;
             }
@@ -598,7 +598,7 @@ function player4Special() // Soin
         case 3:
             player3Health += 60;
 
-            if (player3Health > 300);
+            if (player3Health > 300)
             {
                 player3Health = 300;
             }
@@ -609,7 +609,7 @@ function player4Special() // Soin
         case 4:
             player4Health += 60;
 
-            if (player4Health > 300);
+            if (player4Health > 300)
             {
                 player4Health = 300;
             }
