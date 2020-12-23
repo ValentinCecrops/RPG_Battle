@@ -391,19 +391,28 @@ function playerPoison()
     switch (poisonTarget)
     {
         case 1:
-            if (monster1IsDead) {return;}
+            if (monster1IsDead)
+            {
+                return;
+            }
             monster1Health -= 30;
             mainDisplay.innerHTML = "Le poison inflige 30 de dégâts au spectre ; "  + poisonCounter + " tour(s) restant(s)";
             break;
 
         case 2:
-            if (monster2IsDead) {return;}
+            if (monster2IsDead)
+            {
+                return;
+            }
             monster2Health -= 30;
             mainDisplay.innerHTML = "Le poison inflige 30 de dégâts au minotaure ; "  + poisonCounter + " tour(s) restant(s)";
             break;
 
         case 3:
-            if (monster3IsDead) {return;}
+            if (monster3IsDead)
+            {
+                return;
+            }
             monster3Health -= 30;
             mainDisplay.innerHTML = "Le poison inflige 30 de dégâts au golem ; "  + poisonCounter + " tour(s) restant(s)";
             break;
@@ -441,14 +450,14 @@ function switchPlayer()
                 break;
 
             case 2:
+                if (!player1IsDead)
+                {
+                    player1Box.style.borderColor = "white";
+                }
                 if (player2IsDead)
                 {
                     switchPlayer();
                     return;
-                }
-                if (!player1IsDead)
-                {
-                    player1Box.style.borderColor = "white";
                 }
                 player2Box.style.borderColor = "#fa0";
                 mainDisplay.innerHTML = "Choisissez l'action du mage";
@@ -457,14 +466,14 @@ function switchPlayer()
                 break;
 
             case 3:
+                if (!player2IsDead)
+                {
+                    player2Box.style.borderColor = "white";
+                }
                 if (player3IsDead)
                 {
                     switchPlayer();
                     return;
-                }
-                if (!player2IsDead)
-                {
-                    player2Box.style.borderColor = "white";
                 }
                 player3Box.style.borderColor = "#fa0";
                 mainDisplay.innerHTML = "Choisissez l'action de l'archer";
@@ -473,14 +482,14 @@ function switchPlayer()
                 break;
 
             case 4:
+                if (!player3IsDead)
+                {
+                    player3Box.style.borderColor = "white";
+                }
                 if (player4IsDead)
                 {
                     switchPlayer();
                     return;
-                }
-                if (!player3IsDead)
-                {
-                    player3Box.style.borderColor = "white";
                 }
                 player4Box.style.borderColor = "#fa0";
                 mainDisplay.innerHTML = "Choisissez l'action du guérisseur";
