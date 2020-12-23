@@ -347,35 +347,70 @@ function player3Special() // Salve
 
 function player4Special() // Soin
 {
-    function healPlayer(playerHealth)
-    {
-        playerHealth += 60;
+    let lowestPlayerHealth = player4Health;
+    let lowestPlayerHealthNum = 4;
 
-        if (playerHealth > 300)
-        {
-            playerHealth = 300;
-        }
+    if (player3Health > 0 && player3Health <= lowestPlayerHealth)
+    {
+        lowestPlayerHealth = player3Health;
+        lowestPlayerHealthNum = 3;
+    }
+    if (player2Health > 0 && player2Health <= lowestPlayerHealth)
+    {
+        lowestPlayerHealth = player2Health;
+        lowestPlayerHealthNum = 2;
+    }
+    if (player1Health > 0 && player1Health <= lowestPlayerHealth)
+    {
+        lowestPlayerHealth = player1Health;
+        lowestPlayerHealthNum = 1;
     }
 
-    if (player1Health <= player2Health && player1Health <= player3Health && player1Health <= player4Health)
+    switch (lowestPlayerHealthNum)
     {
-        healPlayer(player1Health);
-        player1HealthDisplay = "Santé : " + player1Health + " / 300";
-    }
-    else if (player2Health <= player1Health && player2Health <= player3Health && player2Health <= player4Health)
-    {
-        healPlayer(player2Health);
-        player2HealthDisplay = "Santé : " + player2Health + " / 300";
-    }
-    else if (player3Health <= player1Health && player3Health <= player2Health && player3Health <= player4Health)
-    {
-        healPlayer(player3Health);
-        player3HealthDisplay = "Santé : " + player3Health + " / 300";
-    }
-    else
-    {
-        healPlayer(player4Health);
-        player4HealthDisplay = "Santé : " + player4Health + " / 300";
+        case 1:
+            player1Health += 60
+
+            if (player1Health > 300)
+            {
+                player1Health = 300;
+            }
+
+            player1HealthDisplay.innerHTML = "Santé : " + player1Health + " / 300";
+            break;
+
+        case 2:
+            player2Health += 60
+
+            if (player2Health > 300)
+            {
+                player2Health = 300;
+            }
+
+            player2HealthDisplay.innerHTML = "Santé : " + player2Health + " / 300";
+            break;
+
+        case 3:
+            player3Health += 60
+
+            if (player3Health > 300)
+            {
+                player3Health = 300;
+            }
+
+            player3HealthDisplay.innerHTML = "Santé : " + player3Health + " / 300";
+            break;
+
+        case 4:
+            player4Health += 60
+
+            if (player4Health > 300)
+            {
+                player4Health = 300;
+            }
+
+            player4HealthDisplay.innerHTML = "Santé : " + player4Health + " / 300";
+            break;
     }
 
     player4Mana -= 50;
@@ -543,7 +578,7 @@ function checkPlayerDeath(playerHealth, playerHealthDisplay, playerBox)
 {
     if (playerHealth <= 0)
     {
-        playerHealthDisplay.innerHtml = "Santé : 0 / 300";
+        playerHealthDisplay.innerHTML = "Santé : 0 / 300";
         playerBox.style.borderColor = "darkred";
         return true;
     }
@@ -579,28 +614,28 @@ async function monsterAttackMain()
     if (!monster1IsDead)
     {
         monsterAttackSequence("spectre");
+        checkMonsterWin();
         await new Promise(r => setTimeout(r, 3000));
     }
 
-    checkMonsterWin();
 
     if (!monster2IsDead)
     {
         monsterAttackSequence("minotaure");
+        checkMonsterWin();
         await new Promise(r => setTimeout(r, 3000));
     }
 
-    checkMonsterWin();
 
     if (!monster3IsDead)
     {
         monsterAttackSequence("golem");
+        checkMonsterWin();
         await new Promise(r => setTimeout(r, 3000));
     }
 
-    checkMonsterWin();
 
-    if (poisonCounter > 0)
+    if (poisonCounter > 0 && !checkMonsterWin())
     {
         playerPoison();
         await new Promise(r => setTimeout(r, 3000));
@@ -617,83 +652,86 @@ function monsterAttackSequence(monsterName)
     let randomPlayer = Math.floor(Math.random() * 4 + 1);
     let monsterAttack;
 
-    switch (randomPlayer)
+    if (!checkMonsterWin())
     {
-        case 1:
-            if (player1IsDead)
-            {
-                monsterAttackSequence(monsterName);
-                return;
-            }
-            if (!player1IsDefended)
-            {
-                monsterAttack = 600 - player1Defense;
-                player1Health -= monsterAttack;
-                player1HealthDisplay.innerHTML = "Santé : " + player1Health + " / 300";
-                mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages au guerrier";
-            }
-            else
-            {
-                mainDisplay.innerHTML = "L'attaque du " + monsterName + " a échoué";
-            }
-            break;
+        switch (randomPlayer)
+        {
+            case 1:
+                if (player1IsDead)
+                {
+                    monsterAttackSequence(monsterName);
+                    return;
+                }
+                if (!player1IsDefended)
+                {
+                    monsterAttack = 200 - player1Defense;
+                    player1Health -= monsterAttack;
+                    player1HealthDisplay.innerHTML = "Santé : " + player1Health + " / 300";
+                    mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages au guerrier";
+                }
+                else
+                {
+                    mainDisplay.innerHTML = "L'attaque du " + monsterName + " a échoué";
+                }
+                break;
 
-        case 2:
-            if (player2IsDead)
-            {
-                monsterAttackSequence(monsterName);
-                return;
-            }
-            if (!player2IsDefended)
-            {
-                monsterAttack = 600 - player2Defense;
-                player2Health -= monsterAttack;
-                player2HealthDisplay.innerHTML = "Santé : " + player2Health + " / 300";
-                mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages au mage";
-            }
-            else
-            {
-                mainDisplay.innerHTML = "L'attaque du " + monsterName + " a échoué";
-            }
-            break;
+            case 2:
+                if (player2IsDead)
+                {
+                    monsterAttackSequence(monsterName);
+                    return;
+                }
+                if (!player2IsDefended)
+                {
+                    monsterAttack = 200 - player2Defense;
+                    player2Health -= monsterAttack;
+                    player2HealthDisplay.innerHTML = "Santé : " + player2Health + " / 300";
+                    mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages au mage";
+                }
+                else
+                {
+                    mainDisplay.innerHTML = "L'attaque du " + monsterName + " a échoué";
+                }
+                break;
 
-        case 3:
-            if (player3IsDead)
-            {
-                monsterAttackSequence(monsterName);
-                return;
-            }
-            if (!player3IsDefended)
-            {
-                monsterAttack = 600 - player3Defense;
-                player3Health -= monsterAttack;
-                player3HealthDisplay.innerHTML = "Santé : " + player3Health + " / 300";
-                mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages à l'archer";
-            }
-            else
-            {
-                mainDisplay.innerHTML = "L'attaque du " + monsterName + " a échoué";
-            }
-            break;
+            case 3:
+                if (player3IsDead)
+                {
+                    monsterAttackSequence(monsterName);
+                    return;
+                }
+                if (!player3IsDefended)
+                {
+                    monsterAttack = 200 - player3Defense;
+                    player3Health -= monsterAttack;
+                    player3HealthDisplay.innerHTML = "Santé : " + player3Health + " / 300";
+                    mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages à l'archer";
+                }
+                else
+                {
+                    mainDisplay.innerHTML = "L'attaque du " + monsterName + " a échoué";
+                }
+                break;
 
-        case 4:
-            if (player4IsDead)
-            {
-                monsterAttackSequence(monsterName);
-                return;
-            }
-            if (!player4IsDefended)
-            {
-                monsterAttack = 600 - player4Defense;
-                player4Health -= monsterAttack;
-                player4HealthDisplay.innerHTML = "Santé : " + player4Health + " / 300";
-                mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages au guérisseur";
-            }
-            else
-            {
-                mainDisplay.innerHTML = "L'attaque du " + monsterName + " a échoué";
-            }
-            break;
+            case 4:
+                if (player4IsDead)
+                {
+                    monsterAttackSequence(monsterName);
+                    return;
+                }
+                if (!player4IsDefended)
+                {
+                    monsterAttack = 200 - player4Defense;
+                    player4Health -= monsterAttack;
+                    player4HealthDisplay.innerHTML = "Santé : " + player4Health + " / 300";
+                    mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages au guérisseur";
+                }
+                else
+                {
+                    mainDisplay.innerHTML = "L'attaque du " + monsterName + " a échoué";
+                }
+                break;
+        }
     }
 }
 
