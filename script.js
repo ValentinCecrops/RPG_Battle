@@ -3,20 +3,10 @@ var player2Box = document.getElementById("player2");
 var player3Box = document.getElementById("player3");
 var player4Box = document.getElementById("player4");
 
-var player1Health = 300;
-var player2Health = 300;
-var player3Health = 300;
-var player4Health = 300;
-
 var player1HealthDisplay = document.getElementById("player1Health");
 var player2HealthDisplay = document.getElementById("player2Health");
 var player3HealthDisplay = document.getElementById("player3Health");
 var player4HealthDisplay = document.getElementById("player4Health");
-
-var player1Mana = 100;
-var player2Mana = 100;
-var player3Mana = 100;
-var player4Mana = 100;
 
 var player1ManaDisplay = document.getElementById("player1Mana");
 var player2ManaDisplay = document.getElementById("player2Mana");
@@ -27,32 +17,33 @@ var monster1 = document.getElementById("wraith");
 var monster2 = document.getElementById("minotaur");
 var monster3 = document.getElementById("golem");
 
-var monster1Health = 300;
-var monster2Health = 300;
-var monster3Health = 300;
-
-var monster1IsDead = false;
-var monster2IsDead = false;
-var monster3IsDead = false;
-
 var buttonAttack = document.getElementById("attack");
 var buttonDefense = document.getElementById("defense");
 var buttonSpecial = document.getElementById("special");
+
+var mainDisplay = document.getElementById("mainDisplay");
 
 var tooltipBox = document.getElementById("tooltip");
 var tooltipTitle = document.getElementById("tooltipTitle");
 var tooltipText = document.getElementById("tooltipText");
 
-var player1ChoiceIsSpecial = false;
-var player2ChoiceIsSpecial = false;
+var player1Health = 300;
+var player2Health = 300;
+var player3Health = 300;
+var player4Health = 300;
 
-var mainDisplay = document.getElementById("mainDisplay");
-var player = 0;
+var player1Mana = 100;
+var player2Mana = 100;
+var player3Mana = 100;
+var player4Mana = 100;
 
 var player1Defense = 30;
 var player2Defense = 10;
 var player3Defense = 15;
 var player4Defense = 20;
+
+var player1ChoiceIsSpecial = false;
+var player2ChoiceIsSpecial = false;
 
 var player1IsDefended = false;
 var player2IsDefended = false;
@@ -64,11 +55,37 @@ var player2IsDead = false;
 var player3IsDead = false;
 var player4IsDead = false;
 
+var player1UsedAttack = false;
+var player1UsedDefense = false;
+var player1UsedSpecial = false;
+
+var player2UsedAttack = false;
+var player2UsedDefense = false;
+
+var player3UsedAttack = false;
+var player3UsedDefense = false;
+var player3UsedSpecial = false;
+
+var player4UsedAttack = false;
+var player4UsedDefense = false;
+var player4UsedSpecial = false;
+
+var monster1Health = 300;
+var monster2Health = 300;
+var monster3Health = 300;
+
+var monster1IsDead = false;
+var monster2IsDead = false;
+var monster3IsDead = false;
+
+var player = 0;
+var turn = 1;
+
 var poisonCounter = 0;
 var poisonTarget;
 
 
-// Evènements -----------------------------------------------------------------
+// Évènements -----------------------------------------------------------------
 
 monster1.onmouseover = function()
 {
@@ -127,15 +144,115 @@ function addButtonEventListeners()
 function attackButtonEventListener()
 {
     removeButtonEventListeners();
-    addMonsterChoiceEventListeners();
-    mainDisplay.innerHTML = "Choisissez un monstre à attaquer";
-    console.log("atk");
+
+    switch (player)
+    {
+        case 1:
+            if (!player1UsedAttack)
+            {
+                addMonsterChoiceEventListeners();
+                mainDisplay.innerHTML = "Choisissez un monstre à attaquer";
+            }
+            else
+            {
+                mainDisplay.innerHTML = "Vous ne pouvez pas attaquer pour ce tour";
+                addButtonEventListeners();
+            }
+            break;
+
+        case 2:
+            if (!player2UsedAttack)
+            {
+                addMonsterChoiceEventListeners();
+                mainDisplay.innerHTML = "Choisissez un monstre à attaquer";
+            }
+            else
+            {
+                mainDisplay.innerHTML = "Vous ne pouvez pas attaquer pour ce tour";
+                addButtonEventListeners();
+            }
+            break;
+
+        case 3:
+            if (!player3UsedAttack)
+            {
+                addMonsterChoiceEventListeners();
+                mainDisplay.innerHTML = "Choisissez un monstre à attaquer";
+            }
+            else
+            {
+                mainDisplay.innerHTML = "Vous ne pouvez pas attaquer pour ce tour";
+                addButtonEventListeners();
+            }
+            break;
+
+        case 4:
+            if (!player4UsedAttack)
+            {
+                addMonsterChoiceEventListeners();
+                mainDisplay.innerHTML = "Choisissez un monstre à attaquer";
+            }
+            else
+            {
+                mainDisplay.innerHTML = "Vous ne pouvez pas attaquer pour ce tour";
+                addButtonEventListeners();
+            }
+            break;
+    }
 }
 
 function defenseButtonEventListener()
 {
-    playerDefense();
-    console.log("def");
+    switch (player)
+    {
+        case 1:
+            if (!player1UsedDefense)
+            {
+                playerDefense();
+            }
+            else
+            {
+                mainDisplay.innerHTML = "Vous ne pouvez pas vous défendre pour ce tour";
+                addButtonEventListeners();
+            }
+            break;
+
+        case 2:
+            if (!player2UsedDefense)
+            {
+                playerDefense();
+            }
+            else
+            {
+                mainDisplay.innerHTML = "Vous ne pouvez pas vous défendre pour ce tour";
+                addButtonEventListeners();
+            }
+            break;
+
+        case 3:
+            if (!player3UsedDefense)
+            {
+                playerDefense();
+            }
+            else
+            {
+                mainDisplay.innerHTML = "Vous ne pouvez pas vous défendre pour ce tour";
+                addButtonEventListeners();
+            }
+            break;
+
+        case 4:
+            if (!player4UsedDefense)
+            {
+                playerDefense();
+            }
+            else
+            {
+                mainDisplay.innerHTML = "Vous ne pouvez pas vous défendre pour ce tour";
+                addButtonEventListeners();
+            }
+            break;
+    }
 }
 
 function specialButtonEventListener()
@@ -145,27 +262,77 @@ function specialButtonEventListener()
     switch (player)
     {
         case 1:
-            player1ChoiceIsSpecial = true;
-            addMonsterChoiceEventListeners();
-            mainDisplay.innerHTML = "Choisissez un monstre à fracasser";
+            if (player1Mana >= 50 && !player1UsedSpecial)
+            {
+                player1ChoiceIsSpecial = true;
+                addMonsterChoiceEventListeners();
+                mainDisplay.innerHTML = "Choisissez un monstre à fracasser";
+            }
+            else if (player1UsedSpecial)
+            {
+                mainDisplay.innerHTML = "Vous ne pouvez pas effectuer cette action pour ce tour";
+                addButtonEventListeners();
+            }
+            else
+            {
+                mainDisplay.innerHTML = "Vous n'avez pas assez de mana";
+                addButtonEventListeners();
+            }
             break;
 
         case 2:
-            player2ChoiceIsSpecial = true;
-            addMonsterChoiceEventListeners();
-            mainDisplay.innerHTML = "Choisissez un monstre à empoisonner";
+            if (player2Mana >= 50 && poisonCounter <= 0)
+            {
+                player2ChoiceIsSpecial = true;
+                addMonsterChoiceEventListeners();
+                mainDisplay.innerHTML = "Choisissez un monstre à empoisonner";
+            }
+            else if (poisonCounter > 0)
+            {
+                mainDisplay.innerHTML = "Vous ne pouvez pas effectuer cette action pour ce tour";
+                addButtonEventListeners();
+            }
+            else
+            {
+                mainDisplay.innerHTML = "Vous n'avez pas assez de mana";
+                addButtonEventListeners();
+            }
             break;
 
         case 3:
-            player3Special();
+            if (player3Mana >= 50 && !player3UsedSpecial)
+            {
+                player3Special();
+            }
+            else if (player3UsedSpecial)
+            {
+                mainDisplay.innerHTML = "Vous ne pouvez pas effectuer cette action pour ce tour";
+                addButtonEventListeners();
+            }
+            else
+            {
+                mainDisplay.innerHTML = "Vous n'avez pas assez de mana";
+                addButtonEventListeners();
+            }
             break;
 
         case 4:
-            player4Special();
+            if (player4Mana >= 50 && !player4UsedSpecial)
+            {
+                player4Special();
+            }
+            else if (player4UsedSpecial)
+            {
+                mainDisplay.innerHTML = "Vous ne pouvez pas effectuer cette action pour ce tour";
+                addButtonEventListeners();
+            }
+            else
+            {
+                mainDisplay.innerHTML = "Vous n'avez pas assez de mana";
+                addButtonEventListeners();
+            }
             break;
     }
-
-    console.log("spe");
 }
 
 function removeButtonEventListeners()
@@ -188,11 +355,11 @@ function monsterChoice1EventListener()
 {
     if (player1ChoiceIsSpecial)
     {
-        player1Special(1)
+        player1Special(1);
     }
     else if (player2ChoiceIsSpecial)
     {
-        player2Special(1)
+        player2Special(1);
     }
     else
     {
@@ -204,11 +371,11 @@ function monsterChoice2EventListener()
 {
     if (player1ChoiceIsSpecial)
     {
-        player1Special(2)
+        player1Special(2);
     }
     else if (player2ChoiceIsSpecial)
     {
-        player2Special(2)
+        player2Special(2);
     }
     else
     {
@@ -220,11 +387,11 @@ function monsterChoice3EventListener()
 {
     if (player1ChoiceIsSpecial)
     {
-        player1Special(3)
+        player1Special(3);
     }
     else if (player2ChoiceIsSpecial)
     {
-        player2Special(3)
+        player2Special(3);
     }
     else
     {
@@ -261,9 +428,31 @@ function playerAttack(monster)
             break;
     }
 
+    switch (player)
+    {
+        case 1:
+            player1UsedAttack = true;
+            player1UsedDefense = player1UsedSpecial = false;
+            break;
+
+        case 2:
+            player2UsedAttack = true;
+            player2UsedDefense = false;
+            break;
+
+        case 3:
+            player3UsedAttack = true;
+            player3UsedDefense = player3UsedSpecial = false;
+            break;
+
+        case 4:
+            player4UsedAttack = true;
+            player4UsedDefense = player4UsedSpecial = false;
+            break;
+    }
+
     removeMonsterChoiceEventListeners();
     switchPlayer();
-    console.log(player, monster);
 }
 
 function playerDefense()
@@ -272,23 +461,33 @@ function playerDefense()
     {
         case 1:
             player1IsDefended = true;
+            player1UsedDefense = true;
+            player1UsedAttack = player1UsedSpecial = false;
             break;
 
         case 2:
             player2IsDefended = true;
+            player2UsedDefense = true;
+            player2UsedAttack = false;
             break;
 
         case 3:
             player3IsDefended = true;
+            player3UsedDefense = true;
+            player3UsedAttack = player3UsedSpecial = false;
             break;
 
         case 4:
             player4IsDefended = true;
+            player4UsedDefense = true;
+            player4UsedAttack = player4UsedSpecial = false;
             break;
     }
 
     switchPlayer()
 }
+
+// Actions spéciales du joueur
 
 function player1Special(monster) // Attaque puissante
 {
@@ -314,9 +513,11 @@ function player1Special(monster) // Attaque puissante
     player1ManaDisplay.innerHTML = "Mana : " + player1Mana + " / 100";
     player1ChoiceIsSpecial = false;
 
+    player1UsedSpecial = true;
+    player1UsedAttack = player1UsedDefense = false;
+
     removeMonsterChoiceEventListeners();
     switchPlayer();
-    console.log(player, monster);
 }
 
 function player2Special(monster) // Poison
@@ -328,19 +529,23 @@ function player2Special(monster) // Poison
     player2ManaDisplay.innerHTML = "Mana : " + player2Mana + " / 100";
     player2ChoiceIsSpecial = false;
 
+    player2UsedAttack = player2UsedDefense = false;
+
     removeMonsterChoiceEventListeners();
     switchPlayer();
-    console.log(player, monster);
 }
 
 function player3Special() // Salve
 {
-    monster1Health -= 30;
-    monster2Health -= 30;
-    monster3Health -= 30;
+    monster1Health -= 35;
+    monster2Health -= 35;
+    monster3Health -= 35;
 
     player3Mana -= 50;
     player3ManaDisplay.innerHTML = "Mana : " + player3Mana + " / 100";
+
+    player3UsedSpecial = true;
+    player3UsedAttack = player3UsedDefense = false;
 
     switchPlayer();
 }
@@ -369,9 +574,9 @@ function player4Special() // Soin
     switch (lowestPlayerHealthNum)
     {
         case 1:
-            player1Health += 60
+            player1Health += 60;
 
-            if (player1Health > 300)
+            if (player1Health > 300);
             {
                 player1Health = 300;
             }
@@ -380,9 +585,9 @@ function player4Special() // Soin
             break;
 
         case 2:
-            player2Health += 60
+            player2Health += 60;
 
-            if (player2Health > 300)
+            if (player2Health > 300);
             {
                 player2Health = 300;
             }
@@ -391,9 +596,9 @@ function player4Special() // Soin
             break;
 
         case 3:
-            player3Health += 60
+            player3Health += 60;
 
-            if (player3Health > 300)
+            if (player3Health > 300);
             {
                 player3Health = 300;
             }
@@ -402,9 +607,9 @@ function player4Special() // Soin
             break;
 
         case 4:
-            player4Health += 60
+            player4Health += 60;
 
-            if (player4Health > 300)
+            if (player4Health > 300);
             {
                 player4Health = 300;
             }
@@ -415,6 +620,9 @@ function player4Special() // Soin
 
     player4Mana -= 50;
     player4ManaDisplay.innerHTML = "Mana : " + player4Mana + " / 100";
+
+    player4UsedSpecial = true;
+    player4UsedAttack = player4UsedDefense = false;
 
     switchPlayer();
 }
@@ -430,8 +638,8 @@ function playerPoison()
             {
                 return;
             }
-            monster1Health -= 30;
-            mainDisplay.innerHTML = "Le poison inflige 30 de dégâts au spectre ; "  + poisonCounter + " tour(s) restant(s)";
+            monster1Health -= 35;
+            mainDisplay.innerHTML = "Le poison inflige 35 de dégâts au spectre ; "  + poisonCounter + " tour(s) restant(s)";
             break;
 
         case 2:
@@ -439,8 +647,8 @@ function playerPoison()
             {
                 return;
             }
-            monster2Health -= 30;
-            mainDisplay.innerHTML = "Le poison inflige 30 de dégâts au minotaure ; "  + poisonCounter + " tour(s) restant(s)";
+            monster2Health -= 35;
+            mainDisplay.innerHTML = "Le poison inflige 35 de dégâts au minotaure ; "  + poisonCounter + " tour(s) restant(s)";
             break;
 
         case 3:
@@ -448,8 +656,8 @@ function playerPoison()
             {
                 return;
             }
-            monster3Health -= 30;
-            mainDisplay.innerHTML = "Le poison inflige 30 de dégâts au golem ; "  + poisonCounter + " tour(s) restant(s)";
+            monster3Health -= 35;
+            mainDisplay.innerHTML = "Le poison inflige 35 de dégâts au golem ; "  + poisonCounter + " tour(s) restant(s)";
             break;
     }
 
@@ -458,6 +666,8 @@ function playerPoison()
         poisonTarget = 0;
     }
 }
+
+// Changement de personnage
 
 function switchPlayer()
 {
@@ -538,6 +748,7 @@ function switchPlayer()
                     player4Box.style.borderColor = "white";
                 }
                 monsterAttackMain();
+                turn += 1;
                 break;
         }
     }
@@ -567,7 +778,7 @@ function checkPlayerWin()
         buttonAttack.disabled = true;
         buttonDefense.disabled = true;
         buttonSpecial.disabled = true;
-        mainDisplay.innerHTML = "Vous avez gagné ! Félicitations !";
+        mainDisplay.innerHTML = "Vous avez gagné après " + turn + " tours ! Félicitations !";
         return true;
     }
 
@@ -664,7 +875,7 @@ function monsterAttackSequence(monsterName)
                 }
                 if (!player1IsDefended)
                 {
-                    monsterAttack = 200 - player1Defense;
+                    monsterAttack = 140 - player1Defense;
                     player1Health -= monsterAttack;
                     player1HealthDisplay.innerHTML = "Santé : " + player1Health + " / 300";
                     mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages au guerrier";
@@ -683,7 +894,7 @@ function monsterAttackSequence(monsterName)
                 }
                 if (!player2IsDefended)
                 {
-                    monsterAttack = 200 - player2Defense;
+                    monsterAttack = 140 - player2Defense;
                     player2Health -= monsterAttack;
                     player2HealthDisplay.innerHTML = "Santé : " + player2Health + " / 300";
                     mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages au mage";
@@ -702,7 +913,7 @@ function monsterAttackSequence(monsterName)
                 }
                 if (!player3IsDefended)
                 {
-                    monsterAttack = 200 - player3Defense;
+                    monsterAttack = 140 - player3Defense;
                     player3Health -= monsterAttack;
                     player3HealthDisplay.innerHTML = "Santé : " + player3Health + " / 300";
                     mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages à l'archer";
@@ -721,7 +932,7 @@ function monsterAttackSequence(monsterName)
                 }
                 if (!player4IsDefended)
                 {
-                    monsterAttack = 200 - player4Defense;
+                    monsterAttack = 140 - player4Defense;
                     player4Health -= monsterAttack;
                     player4HealthDisplay.innerHTML = "Santé : " + player4Health + " / 300";
                     mainDisplay.innerHTML = "Le " + monsterName + " inflige " + monsterAttack + " de dommages au guérisseur";
